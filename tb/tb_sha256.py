@@ -51,6 +51,6 @@ async def sha256_test_2_blocks(dut):
     await ReadOnly()
     actual_val = dut.hash.value.integer
     #cocotb.log.info(f" {actual_val} ")
-    #await Timer(20, 'ns')
+    await Timer(20, 'ns')
     sb_fn(actual_val, res)
     #cocotb.log.info(f" {actual_val} ")

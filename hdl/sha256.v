@@ -118,6 +118,9 @@ module w_generator (
             //counter <= 0;
             //done <= 0;
         end
+        else if (!start) begin
+            counter<=0;
+        end
         // else if (counter < 64) begin
         //     if (counter >= 16) begin
         //         // Shift registers and insert new value
@@ -217,10 +220,26 @@ module sha256 (
     S1 sig1 (.e(e), .S0_val(S1));
     S0 sig0 (.a(a), .S0_val(S0));
     ch ch_func (.e(e), .f(f), .g(g), .ch_val(ch_out));
-    maj maj_func (.a(a), .b(b), .c(c), .maj_val(maj_out));
+    maj maj_func (.a(a), .b(b), .c( c), .maj_val(maj_out));
 
+    // reg [31:0]k_i;
+    // always @(posedge clk) begin
+    //     if(w_rst || rst) begin
+    //         k_i <= k[0];
+    //     end
+    //     if(round <= 7'd62) begin
+    //         k_i <= k[round + 1];
+    //     end
+    //     else if(round>63) begin
+    //        k_i = k[0]; 
+    //     end
+    //     else begin
+    //         k_i <= 32'b0;
+    //     end
+    // end
+    wire [31:0]k_i = k[round<64?round:0];
     // Calculate T1 and T2
-    assign t1 = h + S1 + ch_out + k[round] + w_i;
+    assign t1 = h + S1 + ch_out + k[round<64?round:0] + w_i;//k[round<64?round:0]
     assign t2 = S0 + maj_out;
     assign hash = {h0, h1, h2, h3, h4, h5, h6, h7};
     
@@ -249,8 +268,16 @@ module sha256 (
             h7 <= 32'h5be0cd19;
         end
         else if(round <= 63) begin
-            w_rst <= 0;
-            w_start <= 1;
+            if(round == 62) begin
+                w_rst <= 1;
+                w_start <= 0;
+                next_block_read_rdy <= 1;
+
+            end 
+            else if(round<63) begin
+                w_rst <= 0;
+                w_start <= 1;
+            end
             round <= round + 1;
             next_block_read_rdy <= 0;
 
@@ -264,33 +291,56 @@ module sha256 (
             a <= t1+ t2;
         end
         else if (round > 63) begin
-            round <= 0;
-            current_block <= current_block + 1;
-            w_start <= 0;
-            w_rst <= 1;
-            next_block_read_rdy <= 1;
+            if(current_block == block) begin
+                hash_valid <= 1;
+                h0 <= h0 + a;
+                h1 <= h1 + b;
+                h2 <= h2 + c;
+                h3 <= h3 + d;
+                h4 <= h4 + e;
+                h5 <= h5 + f;
+                h6 <= h6 + g;
+                h7 <= h7 + h;
+            end
+            else begin 
+                round <= 0;
+                current_block <= current_block + 1;
+                w_start <= 1;
+                w_rst <= 0;
+                next_block_read_rdy <= 1;
 
-            h0 <= h0 + a;
-            h1 <= h1 + b;
-            h2 <= h2 + c;
-            h3 <= h3 + d;
-            h4 <= h4 + e;
-            h5 <= h5 + f;
-            h6 <= h6 + g;
-            h7 <= h7 + h;
-        end
-        else if (round > 63 & current_block == block) begin
-            hash_valid <= 1;
-            h0 <= h0 + a;
-            h1 <= h1 + b;
-            h2 <= h2 + c;
-            h3 <= h3 + d;
-            h4 <= h4 + e;
-            h5 <= h5 + f;
-            h6 <= h6 + g;
-            h7 <= h7 + h;
+                h0 <= h0 + a;
+                h1 <= h1 + b;
+                h2 <= h2 + c;
+                h3 <= h3 + d;
+                h4 <= h4 + e;
+                h5 <= h5 + f;
+                h6 <= h6 + g;
+                h7 <= h7 + h;
 
+                a <= h0;
+                b <= h1;
+                c <= h2;
+                d <= h3;
+                e <= h4;
+                f <= h5;
+                g <= h6;
+                h <= h7;
+            end
+            
         end
+        // else if (round > 63 && current_block == block) begin
+        //     hash_valid <= 1;
+        //     h0 <= h0 + a;
+        //     h1 <= h1 + b;
+        //     h2 <= h2 + c;
+        //     h3 <= h3 + d;
+        //     h4 <= h4 + e;
+        //     h5 <= h5 + f;
+        //     h6 <= h6 + g;
+        //     h7 <= h7 + h;
+
+        // end
     end
 
 endmodule

@@ -113,7 +113,7 @@ module sha256_wrapper (
     initial begin
         $dumpfile("sha256.vcd");
         $dumpvars;
-        clk = 1;
+        clk = 0;
 	    forever begin
 		  #5 clk=~clk;
 	    end

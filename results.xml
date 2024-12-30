@@ -1,0 +1,8 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1735566320" />
+    <testcase name="sha256_test_2_blocks" classname="tb_sha256" file="/home/vijval/verilogPractice/sha256/tb/tb_sha256.py" lineno="30" time="0.015651941299438477" sim_time_ns="1325.001" ratio_time="84654.09974720102">
+      <failure message="Test failed with RANDOM_SEED=1735566320" />
+    </testcase>
+  </testsuite>
+</testsuites>
