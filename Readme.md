@@ -79,6 +79,17 @@ gtkwave sha256.vcd sha256config.gtkw
 
 ---
 
+## Output
+
+### Output of Single Block Data
+![Output of Single Block Data](imgs/single_block.png)
+
+### Output of Two Block Data
+![After Processing First Block](imgs/2_block_after1stblk.png)
+![Final Output After Two Blocks](imgs/2_block_final_output.png)
+
+---
+
 ## Components
 
 ### Verilog Modules
@@ -102,3 +113,4 @@ The Python testbenches in `tb/` validate each module against reference models. T
 This project is released under the MIT License.
 
 ---
+
