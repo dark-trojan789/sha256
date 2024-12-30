@@ -11,7 +11,7 @@ SHA256/
 ├── hdl/
 │   ├── wrappers/
 │   │   ├── wrapper.v       # Top-level wrapper for the SHA-256 modules
-│   │   ├── sha256.v        # Main SHA-256 implementation
+│   ├─ sha256.v        # Main SHA-256 implementation
 ├── tb/
 │   ├── sha256_models.py    # Python models for verification
 │   ├── tb_big_sigma_0.py   # Testbench for the Big Sigma 0 module
@@ -23,10 +23,7 @@ SHA256/
 │   ├── tb_w_generator.py   # Testbench for the W generator module
 │   ├── tb_w_new.py         # Testbench for the W_new module
 │   ├── tb_sha256.py        # Testbench for the full SHA-256 module
-├── venv/                   # Python virtual environment
-├── .gitignore              # Git ignore file
 ├── Makefile                # Makefile for building and simulating the project
-├── Readme.md               # Project documentation
 ├── requirements.txt        # Python dependencies for Cocotb
 ├── sha256.vcd              # Value Change Dump for simulation waveforms
 ├── sha256config.gtkw       # GTKWave configuration file
