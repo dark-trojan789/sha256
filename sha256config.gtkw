@@ -1,0 +1,74 @@
+[*]
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Mon Dec 30 10:53:51 2024
+[*]
+[dumpfile] "/home/vijval/verilogPractice/sha256/sha256.vcd"
+[dumpfile_mtime] "Mon Dec 30 10:53:25 2024"
+[dumpfile_size] 88204
+[savefile] "/home/vijval/verilogPractice/sha256/sha256config.gtkw"
+[timestart] 0
+[size] 1000 600
+[pos] -1 -1
+*-16.653471 246300 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] sha256_wrapper.
+[treeopen] sha256_wrapper.sha256.w_gen.
+[sst_width] 214
+[signals_width] 235
+[sst_expanded] 1
+[sst_vpaned_height] 239
+@22
+sha256_wrapper.sha256.hash[255:0]
+sha256_wrapper.sha256.h0[31:0]
+sha256_wrapper.sha256.h1[31:0]
+sha256_wrapper.sha256.block[63:0]
+@28
+sha256_wrapper.sha256.clk
+sha256_wrapper.sha256.rst
+sha256_wrapper.sha256.hash_valid
+@24
+sha256_wrapper.sha256.round[5:0]
+@22
+sha256_wrapper.sha256.a[31:0]
+sha256_wrapper.sha256.w_gen.w_i[31:0]
+sha256_wrapper.sha256.e[31:0]
+@c00023
+sha256_wrapper.sha256.t1[31:0]
+@29
+(0)sha256_wrapper.sha256.t1[31:0]
+(1)sha256_wrapper.sha256.t1[31:0]
+(2)sha256_wrapper.sha256.t1[31:0]
+(3)sha256_wrapper.sha256.t1[31:0]
+(4)sha256_wrapper.sha256.t1[31:0]
+(5)sha256_wrapper.sha256.t1[31:0]
+(6)sha256_wrapper.sha256.t1[31:0]
+(7)sha256_wrapper.sha256.t1[31:0]
+(8)sha256_wrapper.sha256.t1[31:0]
+(9)sha256_wrapper.sha256.t1[31:0]
+(10)sha256_wrapper.sha256.t1[31:0]
+(11)sha256_wrapper.sha256.t1[31:0]
+(12)sha256_wrapper.sha256.t1[31:0]
+(13)sha256_wrapper.sha256.t1[31:0]
+(14)sha256_wrapper.sha256.t1[31:0]
+(15)sha256_wrapper.sha256.t1[31:0]
+(16)sha256_wrapper.sha256.t1[31:0]
+(17)sha256_wrapper.sha256.t1[31:0]
+(18)sha256_wrapper.sha256.t1[31:0]
+(19)sha256_wrapper.sha256.t1[31:0]
+(20)sha256_wrapper.sha256.t1[31:0]
+(21)sha256_wrapper.sha256.t1[31:0]
+(22)sha256_wrapper.sha256.t1[31:0]
+(23)sha256_wrapper.sha256.t1[31:0]
+(24)sha256_wrapper.sha256.t1[31:0]
+(25)sha256_wrapper.sha256.t1[31:0]
+(26)sha256_wrapper.sha256.t1[31:0]
+(27)sha256_wrapper.sha256.t1[31:0]
+(28)sha256_wrapper.sha256.t1[31:0]
+(29)sha256_wrapper.sha256.t1[31:0]
+(30)sha256_wrapper.sha256.t1[31:0]
+(31)sha256_wrapper.sha256.t1[31:0]
+@1401201
+-group_end
+@22
+sha256_wrapper.sha256.d[31:0]
+[pattern_trace] 1
+[pattern_trace] 0
