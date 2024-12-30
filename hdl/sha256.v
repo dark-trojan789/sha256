@@ -88,15 +88,16 @@ module w_generator (
     assign w_i = (counter < 16) ? message[511-32*counter -: 32] : w[15];
     
     integer i;
-    always @(posedge clk or posedge rst) begin
+    always @(posedge clk or posedge rst or negedge start) begin
         if (rst) begin
             // Reset all registers
-            for (i = 0; i < 16; i = i + 1)
+            for (i = 0; i < 16; i = i + 1) begin
                 w[i] <= 32'b0;
+            end
             counter <= 0;
             done <= 0;
         end
-        else if (start) begin
+        else begin
             // Load initial message
             if (counter < 64) begin
                 if(counter < 15) begin
@@ -109,18 +110,29 @@ module w_generator (
                             w[i] <= w[i+1];
                         w[15] <= next_w;
                 end
-            counter <= counter + 1;
                 if (counter == 63) begin
                     done <= 1;
-                    counter <= 0;
+                    w[15]<=0;
+                    //counter <= 0;
                 end
+
+                counter <= counter + 1;
+            end
+            else if(counter == 64) begin
+                w[15]<=0;
+                counter <= counter + 1;
+                //counter<=0;
+            end
+            else if (counter == 65) begin
+                w[15]<=0;
+                counter<=0;
             end
             //counter <= 0;
             //done <= 0;
         end
-        else if (!start) begin
-            counter<=0;
-        end
+        // else if (~start) begin
+        //     //counter <= counter;
+        // end
         // else if (counter < 64) begin
         //     if (counter >= 16) begin
         //         // Shift registers and insert new value
@@ -210,7 +222,7 @@ module sha256 (
     // Instantiate needed modules
     w_generator w_gen (
         .clk(clk),
-        .rst(rst),
+        .rst(w_rst),
         .message(message),
         .start(w_start),
         .w_i(w_i),
@@ -242,13 +254,16 @@ module sha256 (
     assign t1 = h + S1 + ch_out + k[round<64?round:0] + w_i;//k[round<64?round:0]
     assign t2 = S0 + maj_out;
     assign hash = {h0, h1, h2, h3, h4, h5, h6, h7};
-    
+    // always @* begin
+    //     if(rst)
+    //         w_rst <= 1;
+    // end
     always @(posedge clk, posedge rst) begin
         if(rst) begin
             round <= 0;
             current_block <= 1;
             w_start <= 1;
-            w_rst <= 1;
+            hash_valid<=0;
             a <= H0;
             b <= H1;
             c <= H2;
@@ -268,19 +283,28 @@ module sha256 (
             h7 <= 32'h5be0cd19;
         end
         else if(round <= 63) begin
-            if(round == 62) begin
-                w_rst <= 1;
-                w_start <= 0;
+            if(round == 63) begin
+                // w_start <= 0;
                 next_block_read_rdy <= 1;
-
+                //w_rst <= 1;
+                // if(current_block == 2) begin
+                //     h0 <= h0 + a;
+                //     h1 <= h1 + b;
+                //     h2 <= h2 + c;
+                //     h3 <= h3 + d;
+                //     h4 <= h4 + e;
+                //     h5 <= h5 + f;
+                //     h6 <= h6 + g;
+                //     h7 <= h7 + h;
+                // end
             end 
             else if(round<63) begin
+                next_block_read_rdy <= 0;
                 w_rst <= 0;
-                w_start <= 1;
             end
+            w_start <= 1;
             round <= round + 1;
-            next_block_read_rdy <= 0;
-
+            
             h <= g;
             g <= f;
             f <= e;
@@ -290,8 +314,10 @@ module sha256 (
             b <= a;
             a <= t1+ t2;
         end
-        else if (round > 63) begin
+        else if (round == 64) begin
             if(current_block == block) begin
+                w_rst <= 1;
+                round <= 0;
                 hash_valid <= 1;
                 h0 <= h0 + a;
                 h1 <= h1 + b;
@@ -303,11 +329,11 @@ module sha256 (
                 h7 <= h7 + h;
             end
             else begin 
-                round <= 0;
-                current_block <= current_block + 1;
-                w_start <= 1;
-                w_rst <= 0;
-                next_block_read_rdy <= 1;
+                round <= round+1;
+                //current_block <= current_block + 1;
+                //w_start <= 1;
+                w_rst <= 1;
+                next_block_read_rdy <= 0;
 
                 h0 <= h0 + a;
                 h1 <= h1 + b;
@@ -327,8 +353,25 @@ module sha256 (
                 g <= h6;
                 h <= h7;
             end
-            
         end
+        else if (round == 65)begin
+            round <= 0;
+            current_block <= current_block + 1;
+            //w_start <= 1;
+            w_rst <= 0;
+            next_block_read_rdy <= 0;
+            
+            a <= h0;
+            b <= h1;
+            c <= h2;
+            d <= h3;
+            e <= h4;
+            f <= h5;
+            g <= h6;
+            h <= h7;
+        
+        end
+        else round <= round + 1;
         // else if (round > 63 && current_block == block) begin
         //     hash_valid <= 1;
         //     h0 <= h0 + a;

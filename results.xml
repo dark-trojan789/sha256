@@ -1,0 +1,7 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1735592387" />
+    <testcase name="sha256_test" classname="tb_sha256" file="/home/vijval/verilogPractice/sha256/tb/tb_sha256.py" lineno="8" time="0.03126668930053711" sim_time_ns="685.001" ratio_time="21908.331688581842" />
+    <testcase name="sha256_test_2_blocks" classname="tb_sha256" file="/home/vijval/verilogPractice/sha256/tb/tb_sha256.py" lineno="31" time="0.024845600128173828" sim_time_ns="1340.0" ratio_time="53933.090490356015" />
+  </testsuite>
+</testsuites>
