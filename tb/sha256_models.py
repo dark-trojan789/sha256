@@ -54,8 +54,8 @@ def sha256(preprocessed_chunks, num_chunks):
             w[i] = int.from_bytes(chunk[i * 4:(i + 1) * 4], 'big')
         
         for i in range(16, 64):
-            s0 = rightrotate(w[i - 15], 7) ^ rightrotate(w[i - 15], 18) ^ (w[i - 15] >> 3)
-            s1 = rightrotate(w[i - 2], 17) ^ rightrotate(w[i - 2], 19) ^ (w[i - 2] >> 10)
+            s0 = ror(w[i - 15], 7) ^ ror(w[i - 15], 18) ^ (w[i - 15] >> 3)
+            s1 = ror(w[i - 2], 17) ^ ror(w[i - 2], 19) ^ (w[i - 2] >> 10)
             w[i] = (w[i - 16] + s0 + w[i - 7] + s1) & 0xFFFFFFFF
 
         print(f"Chunk {chunk_idx + 1}/{num_chunks}: Message schedule array w:")
@@ -67,10 +67,10 @@ def sha256(preprocessed_chunks, num_chunks):
 
         # Compression function main loop
         for i in range(64):
-            S1 = rightrotate(e, 6) ^ rightrotate(e, 11) ^ rightrotate(e, 25)
+            S1 = ror(e, 6) ^ ror(e, 11) ^ ror(e, 25)
             ch = (e & f) ^ ((~e) & g)
             temp1 = (h_temp + S1 + ch + k[i] + w[i]) & 0xFFFFFFFF
-            S0 = rightrotate(a, 2) ^ rightrotate(a, 13) ^ rightrotate(a, 22)
+            S0 = ror(a, 2) ^ ror(a, 13) ^ ror(a, 22)
             maj = (a & b) ^ (a & c) ^ (b & c)
             temp2 = (S0 + maj) & 0xFFFFFFFF
 
