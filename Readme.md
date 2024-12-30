@@ -11,7 +11,7 @@ SHA256/
 ├── hdl/
 │   ├── wrappers/
 │   │   ├── wrapper.v       # Top-level wrapper for the SHA-256 modules
-│   ├─ sha256.v        # Main SHA-256 implementation
+│   ├─ sha256.v             # Main SHA-256 implementation
 ├── tb/
 │   ├── sha256_models.py    # Python models for verification
 │   ├── tb_big_sigma_0.py   # Testbench for the Big Sigma 0 module
